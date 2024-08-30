@@ -10,7 +10,7 @@ public class MetaEvolutivo {
     private Individuo[] populacao2 = new Individuo[10];
     private Individuo[] populacaoNova = new Individuo[10];
 
-    private int eras = 1000000;
+    private int eras = 1;
     private int eraAtual;
     private double soma_aptidoes = 0;
 
@@ -41,21 +41,20 @@ public class MetaEvolutivo {
             double sum = 0;
             double sumOfSquares = 0;
             int n = populacao.length;
-
+            
             for (int j = 0; j < n; j++) {
-                int dp = populacao[j].getItemMochila()[i].getVaiNaMochila();
-                sum += dp;
-                sumOfSquares += dp * dp;
+                int value = populacao[j].getItemMochila()[i].getVaiNaMochila();
+                sum += value;
+                sumOfSquares += value * value;
             }
 
-            double mean = sum / n;
-            double variance = (sumOfSquares / n) - (mean * mean);
+            double variance = (sumOfSquares - (sum * sum) / n) / (n - 1);
             double stdDeviation = Math.sqrt(variance);
 
             vetor_variancia[i] = stdDeviation;
         }
     }
-
+    
     private void selecionarEPerturbarIndividuos() {
         soma_aptidoes = 0;
         for (int i = 0; i < populacao.length; i++) {
@@ -64,8 +63,8 @@ public class MetaEvolutivo {
 
         Random rand = new Random();
         for (int j = 0; j < populacao2.length; j++) {
-            double selecao = rand.nextDouble() * soma_aptidoes;
-
+            double selecao = rand.nextDouble(soma_aptidoes);
+            
             Individuo selecionado = new Individuo();
             double soma_parcial = 0;
             for (int i = 0; i < populacao.length; i++) {
@@ -76,11 +75,13 @@ public class MetaEvolutivo {
                 }
             }
 
-            populacao2[j] = perturbarIndividuo(selecionado, vetor_variancia);
+            if (selecionado != null) {
+                populacao2[j] = perturbarIndividuo(selecionado, vetor_variancia);
+            }
         }
     }
 
-    private void ordenarECombinarPopulacoes() {        
+    private void ordenarECombinarPopulacoes() {
         Arrays.sort(populacao, (o1, o2) -> Double.compare(o2.getAptidao(), o1.getAptidao()));
         Arrays.sort(populacao2, (p1, p2) -> Double.compare(p2.getAptidao(), p1.getAptidao()));
 
@@ -90,13 +91,13 @@ public class MetaEvolutivo {
 
         populacao = populacaoNova;
         
-        if (eraAtual == 0 || eraAtual == (eras / 2) || (eraAtual + 1) == eras) {
+        if ((eraAtual + 1) == eras) {
 
-            System.out.println("*************************** INÍCIO DA ERA " + eraAtual + " *********************************");
+            System.out.println("*************************** INÍCIO DA ERA " + (eraAtual + 1) + " *********************************");
             for (int i = 0; i < populacao.length; i++) {
             	System.out.println((i + 1) + "º " + populacao[i].toString());
             }
-            System.out.println("*************************** FIM DA ERA " + eraAtual + " *********************************");
+            System.out.println("*************************** FIM DA ERA " + (eraAtual + 1) + " *********************************");
         }
     }
 
@@ -106,8 +107,8 @@ public class MetaEvolutivo {
             double r = rand.nextDouble();
 
             if (r < vetor_variancia[i]) {
-                int itemVaiNaMochila = selecionado.getItemMochila()[i].getVaiNaMochila();
-                selecionado.getItemMochila()[i].setVaiNaMochila(itemVaiNaMochila == 1 ? 0 : 1);
+                int itemVaiNaMochila = selecionado.getItemMochila()[i].getVaiNaMochila() == 1 ? 0 : 1;
+                selecionado.getItemMochila()[i].setVaiNaMochila(itemVaiNaMochila);
             }
         }
         return selecionado;

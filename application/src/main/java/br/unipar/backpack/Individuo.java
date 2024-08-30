@@ -7,29 +7,14 @@ public class Individuo {
 	private ItemMochila[] itemMochila = new ItemMochila[10];
 	private int C = 1;
 	private double aptidao = 0;
-	
+	private double peso = 0.0;
+
 	public ItemMochila[] getItemMochila() {
 		return itemMochila;
 	}
 	
-	public void setItemMochila(ItemMochila[] itemMochila) {
-		this.itemMochila = itemMochila;
-	}
-	
-	public int getC() {
-		return C;
-	}
-	
-	public void setC(int c) {
-		C = c;
-	}
-	
 	public double getAptidao() {
 		return aptidao;
-	}
-	
-	public void setAptidao(double aptidao) {
-		this.aptidao = aptidao;
 	}
 	
     public void popularIndividuo() {
@@ -39,7 +24,7 @@ public class Individuo {
 
 		for (int i = 0; i < itemMochila.length; i++) {
 			itemMochila[i] = new ItemMochila();
-			itemMochila[i].setItem(Item.toEnum(i+1));
+			itemMochila[i].setItem(Item.toEnum((i + 1)));
 
 			itemMochila[i].setVaiNaMochila(random.nextInt(2));
 			soma_peso += itemMochila[i].getItem().getPeso();
@@ -60,15 +45,18 @@ public class Individuo {
     
 	@Override
 	public String toString() {
-		return "Individuo [ aptidao=" + aptidao + " mochila = " + getItensMochila() + "]";
+		String itens = getItensMochila();
+		return "Indivíduo [ aptidao = " + Math.round(aptidao) + ", peso da mochila = " + peso + ",\n        mochila = [" + itens + "]]\n";
 	}
 	
 	private String getItensMochila() {
 		String itens = "";
-		
+		peso = 0.0;
+			
 		for (ItemMochila item : itemMochila) {
 			if (item.getVaiNaMochila() == 1) {
-				itens += item.toString() + ",";
+				peso += item.getItem().getPeso();
+				itens += "\n" + item.toString();
 			}
 		}
 		return itens;

@@ -23,6 +23,6 @@ public class ItemMochila {
 
 	@Override
 	public String toString() {
-		return "\n                Item mochila [vai na mochila = " + vaiNaMochila + ", item = " + item.getDescricao() + "]";
+		return "                Item mochila [item = " + item.getDescricao() + ", peso = " + item.getPeso() + ", importância = " + item.getImportancia() + "]";
 	}
 }

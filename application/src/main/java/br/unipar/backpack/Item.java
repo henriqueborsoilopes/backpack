@@ -3,7 +3,7 @@ package br.unipar.backpack;
 public enum Item {
 
 	ITEM8(8, "Faca",         1, 10),
-	ITEM2(2, "Fósforo",      1, 10),
+	ITEM2(2, "Fósforo",      0.1, 10),
 	ITEM1(1, "Barraca",      3, 10),
 	ITEM4(4, "Comida",       3, 10),
 	ITEM7(7, "Lampião",      1, 3),
@@ -15,10 +15,10 @@ public enum Item {
 
 	private int posicao;
     private String descricao;
-    private int peso;
+    private double peso;
     private int importancia;
 
-    private Item(int posicao, String descricao, int peso, int importancia) {
+    private Item(int posicao, String descricao, double peso, int importancia) {
         this.descricao = descricao;
         this.peso = peso;
         this.importancia = importancia;
@@ -33,7 +33,7 @@ public enum Item {
 		return descricao;
 	}
 
-	public int getPeso() {
+	public double getPeso() {
 		return peso;
 	}
 
